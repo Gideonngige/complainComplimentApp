@@ -59,7 +59,7 @@ export default function Notifications() {
         <ScrollView className="">
       
         <View className="bg-white  p-5 font-sans">
-          {notifications.length === 0 ? (
+          {notifications.length > 0 ? (
             <Alert />
           ) : (
             

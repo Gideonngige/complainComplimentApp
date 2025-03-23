@@ -6,12 +6,14 @@ import Toast from "react-native-toast-message";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home(){
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     // handle new feedback
     const handleNewFeedback = () => {
-        alert('New Feedback');
+        // alert('New Feedback');
+        router.push('feedback/')
     }
     // end of handle new feedback
 
@@ -74,7 +76,7 @@ export default function Home(){
             </View>
             {/* end of submitted feedbacks */}
 
-            <TouchableOpacity className="w-full bg-green-800 p-4 rounded-lg" onPress={handleNewFeedback}>
+            <TouchableOpacity className="w-full bg-green-800 p-4 mb-8 rounded-lg" onPress={handleNewFeedback}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">New Feedback</Text> }
         
       </TouchableOpacity>

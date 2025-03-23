@@ -3,6 +3,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { useState } from "react";
 import "../global.css";
 import { useRouter } from "expo-router";
+import { router } from "expo-router";
 // import axios from "axios";
 import Toast from "react-native-toast-message";
 
