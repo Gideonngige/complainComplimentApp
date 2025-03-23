@@ -63,7 +63,7 @@ export default function Notifications() {
             <Alert />
           ) : (
             
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
+            <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
                     <Text className='font-bold text-green-800'>compliment</Text>

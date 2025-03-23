@@ -21,11 +21,17 @@ export default function Admin(){
       };
 
     // handle new feedback
-    const handleNewFeedback = () => {
+    const handleReport = () => {
         // alert('New Feedback');
-        router.push('feedback/')
+        router.push('report/')
     }
     // end of handle new feedback
+
+    // handle respond
+    const handleRespond = () => {
+        alert('Respond');
+    }
+    // end of handle respond
 
     if (loading) {
         return <ActivityIndicator size="large" color="#FFA500" />;
@@ -60,7 +66,7 @@ export default function Admin(){
       />
       </View>
 
-        <TouchableOpacity className="w-full h-20 justify-center items-center bg-green-800 p-4 mb-8 rounded-lg" onPress={handleNewFeedback}>
+        <TouchableOpacity className="w-full h-20 justify-center items-center bg-green-800 p-4 mb-8 rounded-lg" onPress={handleReport}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">Report</Text> }
       </TouchableOpacity>
       </View>
@@ -73,7 +79,7 @@ export default function Admin(){
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
                     <Text className='font-bold text-green-800'>complain</Text>
-                    <Text className='font-bold text-green-800'>pending</Text>
+                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
                 </View>
                 <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
             </View>
@@ -82,7 +88,7 @@ export default function Admin(){
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
                     <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>on-progress</Text>
+                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
                 </View>
                 <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
             </View>
@@ -91,7 +97,7 @@ export default function Admin(){
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
                     <Text className='font-bold text-green-800'>complain</Text>
-                    <Text className='font-bold text-green-800'>solved</Text>
+                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
                 </View>
                 <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
             </View>

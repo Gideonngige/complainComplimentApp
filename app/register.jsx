@@ -33,36 +33,8 @@ export default function Register(){
     <View className="flex-1 bg-white justify-center items-center p-5 font-sans">
       <Text className="text-xl text-green-800 font-bold">Register</Text>
     <View className="w-full">
-    <Text className="text-lg text-green-800 font-bold">Select Chama</Text>
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        placeholder="Select a chama"
-        style={{borderColor: '#277230',borderWidth: 2,  
-        }}
-        listMode="SCROLLVIEW"
-      />
-    </View>
-        
-      <Text className="w-full  text-green-800 text-lg font-bold">Enter your fullname</Text>
-      <TextInput 
-      placeholder="Enter your fullname"
-      value={fullname}
-      onChangeText={setFullname}
-      className="w-full p-4 bg-white rounded-lg shadow-sm mb-4 border border-green-800 text-gray-400 text-lg"
-      />
-      <Text className="w-full text-green-800 text-lg font-bold">Enter your phonenumber</Text>
-      <TextInput 
-      placeholder="Enter your phonenumber"
-      value={phonenumber}
-      onChangeText={setPhonenumber}
-      className="w-full p-4 bg-white rounded-lg shadow-sm mb-4 border border-green-800 text-gray-400 text-lg"
-      />
-      <Text className="w-full text-green-800 text-lg font-bold">Enter your email</Text>
+
+    <Text className="w-full text-green-800 text-lg font-bold">Enter your email</Text>
       <TextInput 
       placeholder="Enter your email"
       keyboardType="email-address"
@@ -70,7 +42,22 @@ export default function Register(){
       onChangeText={setEmail}
       className="w-full p-4 bg-white rounded-lg shadow-sm mb-4 border border-green-800 text-gray-400 text-lg"
       />
-      <Text className="w-full text-green-800 text-lg font-bold">Enter your password</Text>
+    <Text className="text-lg text-green-800 font-bold">Select role</Text>
+      <DropDownPicker
+        open={open}
+        value={value}
+        items={items}
+        setOpen={setOpen}
+        setValue={setValue}
+        setItems={setItems}
+        placeholder="Select your role"
+        style={{borderColor: '#277230',borderWidth: 2,  
+        }}
+        listMode="SCROLLVIEW"
+      />
+    </View>
+      
+      <Text className="w-full mt-6 text-green-800 text-lg font-bold">Enter your password</Text>
       <TextInput 
       placeholder="Enter your password"
       secureTextEntry 

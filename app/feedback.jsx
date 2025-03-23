@@ -38,7 +38,7 @@ export default function Feedback() {
     <ScrollView nestedScrollEnabled={true} className="p-4">
     <View className="flex-1 bg-white justify-center items-center p-5 font-sans">
       <View className="w-full mb-4">
-    <Text className="text-lg text-green-800 font-bold">Select complain or compliment</Text>
+    <Text className="text-lg text-green-800 font-bold">Title</Text>
       <DropDownPicker
         open={open}
         value={value}

@@ -18,7 +18,7 @@ export default function Index() {
 
   // start of handle login
   const handleLogin = () => {
-    router.push('admin/');
+    router.push('home/');
     
   }
   // end of handle login
