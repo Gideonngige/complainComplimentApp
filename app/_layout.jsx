@@ -12,6 +12,7 @@ export default function RootLayout() {
       <Stack.Screen name="notifications"options={{title:"Notifications"}}  />
       <Stack.Screen name="feedback"options={{title:"Feedback"}}  />
       <Stack.Screen name="adminresponse"options={{title:"Admin Response"}}  />
+      <Stack.Screen name="admin"options={{title:"Admin"}}  />
       </Stack>
     </SafeAreaProvider>
   );
