@@ -18,7 +18,7 @@ export default function Index() {
 
   // start of handle login
   const handleLogin = () => {
-    router.push('register/');
+    router.push('adminresponse/');
     
   }
   // end of handle login
