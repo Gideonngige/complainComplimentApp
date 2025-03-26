@@ -73,7 +73,7 @@ export default function Notifications() {
                 <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
             </View>
           )}
-          <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
+          <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
                     <Text className='font-bold text-green-800'>compliment</Text>
@@ -83,7 +83,7 @@ export default function Notifications() {
                 <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
             </View>
 
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
+            <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
                     <Text className='font-bold text-green-800'>compliment</Text>

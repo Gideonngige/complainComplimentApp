@@ -4,7 +4,7 @@ import { useState } from "react";
 import "../global.css";
 import { useRouter } from "expo-router";
 import { router } from "expo-router";
-// import axios from "axios";
+import axios from "axios";
 import Toast from "react-native-toast-message";
 
 export default function Register(){
@@ -22,10 +22,96 @@ export default function Register(){
       { label: 'Staff', value: 'Staff' },
       { label: 'Student', value: 'Student' },
     ]);
-    const handleRegister = async() => {
-        router.push('home/');
 
+    //start of handle register
+    const handleRegister = async() => {
+      if(email == "" || value == "" || password == "" || confirmPassword == ""){
+        Toast.show({
+              type: "error", // Can be "success", "error", "info"
+              text1: "Empty fields",
+              text2: "Please fill in all fields",
+              position:"center",
+            });
+        return;
+      }
+      else{
+      if(password == confirmPassword){
+        setIsLoading(true);
+        try {
+          const url = "https://complaincomplimentbackend.onrender.com/register/";
+          const data = {
+              email: email,
+              role: value,
+              password: password,
+          };
+  
+          console.log("Sending data:", data);  // Log request data
+  
+          const response = await axios.post(url, data, {
+              headers: { "Content-Type": "application/json" },
+          });
+  
+          console.log("Response received:", response.data);  // Log response
+          // alert(response.data.message || "Registration successful!");
+          Toast.show({
+            type: "success", // Can be "success", "error", "info"
+            text1: "Successfully",
+            text2: response.data.message,
+            position:"center",
+          });
+          if(response.data.message == "Successfully registered"){
+            router.push("/");
+          }
+          else{
+            Toast.show({
+              type: "error", // Can be "success", "error", "info"
+              text1: "Failed registration",
+              text2: response.data.message,
+              position:"center",
+            });
+            // alert(response.data.message);
+          }
+  
+      } 
+      catch (error) {
+          // console.error("Error during registration:", error);
+  
+          if (error.response) {
+              // console.error("Server Error:", error.response.data);
+              Toast.show({
+                type: "error", // Can be "success", "error", "info"
+                text1: "Error",
+                text2: error.response.data.message,
+                position:"center",
+              });
+              // alert("Server Error: " + JSON.stringify(error.response.data));
+          } else {
+              console.error("Network Error:", error.message);
+              Toast.show({
+                type: "error", // Can be "success", "error", "info"
+                text1: "Network Error",
+                text2: error.message,
+                position:"center",
+              });
+              // alert("Network Error: " + error.message);
+          }
+      }
+      finally{
+        setIsLoading(false);
+      }
     }
+    else{
+      Toast.show({
+        type: "error", // Can be "success", "error", "info"
+        text1: "Password mismatch",
+        text2: "Password do not match",
+        position:"center",
+      });
+      // alert("Passwords do not match");
+    }
+  }
+  }
+    // end of handle register
 
     return(
         <SafeAreaView className="flex-1 bg-white">
