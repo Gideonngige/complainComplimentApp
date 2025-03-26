@@ -9,6 +9,41 @@ export default function Home(){
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [email, setEmail] = useState("llll");
+
+    // fetch use data
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const email = await AsyncStorage.getItem('email');
+            
+            const url = `https://backend1-1cc6.onrender.com/getMember/${email}/`;
+            const response = await axios.get(url);
+            await AsyncStorage.setItem('email',email);
+            
+            if(response.status === 200){
+              Toast.show({
+                type: "success", // Can be "success", "error", "info"
+                text1: "Successfully Login",
+                text2: "You have successfully logged in",
+              });
+              
+              setEmail(email);
+        
+            //   await AsyncStorage.setItem('member_id', response.data.member_id);
+              
+            }
+            
+          } 
+          catch (error) {
+            console.error("Error:", error);
+            return null;
+          }
+        }
+        fetchData();
+    
+      },[email]);
+    // end of fetch user data
 
     // handle new feedback
     const handleNewFeedback = () => {
@@ -25,7 +60,7 @@ export default function Home(){
         <ScrollView className="p-4">
         <View className="flex-1 bg-white justify-center items-center p-2 font-sans">
             <View className='w-full bg-green-800 justify-center items-center h-20'>
-                <Text className="text-4xl font-bold text-white">John Doe</Text>
+                <Text className="text-xl font-bold text-white">{email}</Text>
             </View>
 
             {/* submitted feedbacks */}

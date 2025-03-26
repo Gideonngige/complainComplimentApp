@@ -7,6 +7,7 @@ import { router } from "expo-router";
 import axios from "axios";
 import Toast from "react-native-toast-message";
 
+
 export default function Register(){
     const router = useRouter();
     const [fullname,setFullname] = useState("");
