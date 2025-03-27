@@ -9,28 +9,28 @@ export default function Home(){
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [email, setEmail] = useState("llll");
+    const [email, setEmail] = useState("youremail@example.com");
+    const [feedbacks, setFeedbacks] = useState([]);
 
     // fetch use data
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true);
+
           try {
             const email = await AsyncStorage.getItem('email');
+            setEmail(email);
             
-            const url = `https://backend1-1cc6.onrender.com/getMember/${email}/`;
+            const url = `https://complaincomplimentbackend.onrender.com/getfeedbacks/${email}/`;
             const response = await axios.get(url);
-            await AsyncStorage.setItem('email',email);
-            
             if(response.status === 200){
               Toast.show({
                 type: "success", // Can be "success", "error", "info"
                 text1: "Successfully Login",
                 text2: "You have successfully logged in",
               });
-              
               setEmail(email);
-        
-            //   await AsyncStorage.setItem('member_id', response.data.member_id);
+              setFeedbacks(response.data);
               
             }
             
@@ -38,6 +38,9 @@ export default function Home(){
           catch (error) {
             console.error("Error:", error);
             return null;
+          }
+          finally{
+            setIsLoading(false);
           }
         }
         fetchData();
@@ -52,6 +55,15 @@ export default function Home(){
     }
     // end of handle new feedback
 
+    // Alert component
+  const Alert = () => {
+    return (
+      <View className="flex flex-row items-center justify-center w-full bg-green-800 p-3 rounded-lg">
+        <Text className="text-white font-bold">You have 0 notifications</Text>
+      </View>
+    );
+  };
+
     if (loading) {
         return <ActivityIndicator size="large" color="#FFA500" />;
     }
@@ -62,9 +74,29 @@ export default function Home(){
             <View className='w-full bg-green-800 justify-center items-center h-20'>
                 <Text className="text-xl font-bold text-white">{email}</Text>
             </View>
+            <Text className='w-full text-lg mt-5 font-bold'>Submitted Feedbacks</Text>
 
             {/* submitted feedbacks */}
-            <Text className='w-full text-lg mt-5 font-bold'>Submitted Feedbacks</Text>
+
+            {feedbacks.length === 0 ? (
+            <Alert />
+          ) : (
+            
+            <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
+                <View className="flex-row justify-between bg-white p-3 rounded-lg">
+                    <Text className='font-bold text-green-800'>12/03/2025</Text>
+                    <Text className='font-bold text-green-800'>compliment</Text>
+                    <Text className='font-bold text-green-800'>addressed</Text>
+                </View>
+                <Text className='m-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non...</Text>
+                <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
+            </View>
+          )}
+
+
+
+
+            
             <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>12/03/2025</Text>
@@ -115,6 +147,7 @@ export default function Home(){
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">New Feedback</Text> }
         
       </TouchableOpacity>
+        <Toast/>
 
         <StatusBar/>
         </View>
