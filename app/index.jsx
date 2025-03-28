@@ -33,9 +33,17 @@ export default function Index() {
         if(message == "Successfully logged in"){
           await AsyncStorage.setItem('email', email);
           // router.push("/home");
-          navigation.navigate('home', {
-            email,
-          });
+          if(email === "gtechcompany01@gmail.com"){
+            navigation.navigate('admin', {
+              email,
+            });
+          }
+          else{
+            navigation.navigate('home', {
+              email,
+            });
+
+          }
       
         }
         else{

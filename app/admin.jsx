@@ -10,6 +10,7 @@ export default function Admin(){
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [feedbacks, setFeedbacks] = useState([]);
 
     const data = {
         labels: ["Received", "Solved"],
@@ -19,6 +20,35 @@ export default function Admin(){
           },
         ],
       };
+
+    // start fetch feedbacks
+    useEffect(() => {
+        const fetchFeedbacks = async () => {
+            setLoading(true);
+            try{
+                const response = await axios.get(`http://127.0.0.1:8000/getadminfeedbacks/`);
+                alert(response.status);
+                if(response.status === 200){
+                    Toast.show({
+                        type: "success",
+                        text1: "Successfully",
+                        text2: "Feedbacks fetched successfully",
+                    });
+                    setFeedbacks(response.data);
+
+                }
+
+            }
+            catch(error){
+                console.error(error);
+            }
+            finally{
+                setLoading(false);
+            }
+        }
+        fetchFeedbacks();
+    },[]);
+    // end of fetch feedback
 
     // handle new feedback
     const handleReport = () => {
@@ -30,8 +60,38 @@ export default function Admin(){
     // handle respond
     const handleRespond = () => {
         alert('Respond');
+        router.push('adminresponse/')
     }
     // end of handle respond
+
+     // Alert component
+  const Alert = () => {
+    return (
+      <View className="flex flex-row items-center justify-center w-full bg-green-800 p-3 rounded-lg">
+        <Text className="text-white font-bold">You have 0 notifications</Text>
+      </View>
+    );
+  };
+
+    // feedback component
+    const Feedback = ({created_at, title, message, category, user_id}) => {
+        return (
+            <View className='w-full p-4 m-1 bg-white rounded-lg shadow-lg'>
+                <View className="flex-row justify-between bg-white p-3 rounded-lg">
+                    <Text className='font-bold text-green-800'>{created_at}</Text>
+                    <Text className='font-bold text-green-800'>{title}</Text>
+                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
+                </View>
+                <Text className='m-3'>{message}</Text>
+                <View className="flex-row justify-between bg-white p-3 rounded-lg">
+                    <Text className='font-bold text-green-800'>Category: {category}</Text>
+                    <Text className='font-bold text-green-800'>User ID: {user_id}</Text>
+                </View>
+            </View>
+            
+        );
+    }
+    // end of feedback component
 
     if (loading) {
         return <ActivityIndicator size="large" color="#FFA500" />;
@@ -47,7 +107,7 @@ export default function Admin(){
         <BarChart
         data={data}
         width={Dimensions.get("window").width - 10} // Full width
-        height={300}
+        height={200}
         yAxisLabel=""
         yAxisSuffix="%"
         chartConfig={{
@@ -74,33 +134,17 @@ export default function Admin(){
 
       <ScrollView className="">
             {/* submitted feedbacks */}
+
             <Text className='w-full text-lg mt-5 font-bold'>Feedbacks</Text>
-            <View className='w-full p-4 m-1 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>complain</Text>
-                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
-
-            <View className='w-full p-4 m-1 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
-
-            <View className='w-full p-4 m-1 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>complain</Text>
-                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
+            {feedbacks.length == 0 ? (
+            <Alert />
+          ) : (
+            <FlatList
+              data={feedbacks}
+              keyExtractor={(item) => item.feedback_id.toString()}
+              renderItem={({ item }) => <Feedback created_at={item.created_at.split("T")[0]} title={item.title} status={item.status} message={item.message} category={item.category} user_id={item.user_id} />}
+            /> 
+          )}
             {/* end of submitted feedbacks */}
             </ScrollView>
 

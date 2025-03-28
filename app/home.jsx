@@ -21,7 +21,7 @@ export default function Home(){
             const email = await AsyncStorage.getItem('email');
             setEmail(email);
             
-            const url = `https://complaincomplimentbackend.onrender.com/getfeedbacks/${email}/`;
+            const url = `http://127.0.0.1:8000/getfeedbacks/${email}/`;
             const response = await axios.get(url);
             if(response.status === 200){
               Toast.show({
@@ -55,6 +55,24 @@ export default function Home(){
     }
     // end of handle new feedback
 
+    // feedback component
+    const Feedback = ({create_at, title, status, message, category }) => {
+        return (
+          <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
+          <View className="flex-row justify-between bg-white p-3 rounded-lg">
+              <Text className='font-bold text-green-800'>{create_at}</Text>
+              <Text className='font-bold text-green-800'>{title}</Text>
+              <Text className='font-bold text-green-800'>{status}</Text>
+          </View>
+          <Text className='m-3'>{message}</Text>
+          <View className="flex-row justify-between bg-white p-3 rounded-lg">
+            <Text className='font-bold text-green-800'>{category}</Text>
+          </View>
+      </View>
+        )
+    }
+    // end of feedback component
+
     // Alert component
   const Alert = () => {
     return (
@@ -78,72 +96,18 @@ export default function Home(){
 
             {/* submitted feedbacks */}
 
-            {feedbacks.length === 0 ? (
+            {feedbacks.length == 0 ? (
             <Alert />
           ) : (
-            
-            <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>addressed</Text>
-                </View>
-                <Text className='m-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non...</Text>
-                <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
+            <FlatList
+              data={feedbacks}
+              keyExtractor={(item) => item.feedback_id.toString()}
+              renderItem={({ item }) => <Feedback create_at={item.created_at.split("T")[0]} title={item.title} status={item.status} message={item.message} category={item.category} />}
+            /> 
           )}
-
-
-
-
-            
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>complain</Text>
-                    <Text className='font-bold text-green-800'>pending</Text>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
-
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>on-progress</Text>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
-
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>complain</Text>
-                    <Text className='font-bold text-green-800'>solved</Text>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
-
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>complain</Text>
-                    <Text className='font-bold text-green-800'>solved</Text>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
-
-            <View className='w-80 p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>pending</Text>
-                </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
             {/* end of submitted feedbacks */}
 
-            <TouchableOpacity className="w-full bg-green-800 p-4 mb-8 rounded-lg" onPress={handleNewFeedback}>
+            <TouchableOpacity className="w-full bg-green-800 mt-4 p-4 mb-8 rounded-lg" onPress={handleNewFeedback}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">New Feedback</Text> }
         
       </TouchableOpacity>

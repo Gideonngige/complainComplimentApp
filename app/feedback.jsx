@@ -5,6 +5,7 @@ import { useState } from "react";
 import Toast from "react-native-toast-message";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from "expo-router";
+import axios from "axios";
 
 export default function Feedback() {
   const [message, setMessage] = useState("");
@@ -12,22 +13,119 @@ export default function Feedback() {
   const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
-      { label: 'Complain', value: 'Complain' },
-      { label: 'Compliment', value: 'Compliment' },
+      { label: 'complain', value: 'complain' },
+      { label: 'compliment', value: 'compliment' },
     ]);
     const [open2, setOpen2] = useState(false);
     const [value2, setValue2] = useState(null);
     const [items2, setItems2] = useState([
-      { label: 'Academic', value: 'Academic' },
-      { label: 'Finance', value: 'Finance' },
+      { label: 'academic', value: 'academic' },
+      { label: 'finance', value: 'finance' },
+      {label: 'hostel', value: 'hostel'},
+      {label: 'library', value: 'library'},
+      {label: 'medical', value: 'medical'},
+      {label: 'security', value: 'security'},
+      {label: 'transport', value: 'transport'},
     ]);
 
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
   // start of handle login
-  const handleSubmitFeedback = () => {
-    router.push('register/');
+  const handleSubmitFeedback = async() => {
+     if(value == "" || value2 == "" || message == ""){
+            Toast.show({
+                  type: "error", // Can be "success", "error", "info"
+                  text1: "Empty fields",
+                  text2: "Please fill in all fields",
+                  position:"center",
+                });
+            return;
+          }
+          else{
+            setIsLoading(true);
+            try {
+              const email = await AsyncStorage.getItem('email');
+              const url = "https://complaincomplimentbackend.onrender.com/feedbacks/";
+              const data = {
+                  email: email,
+                  title: value,
+                  category: value2,
+                  message: message,
+                  anonymous: isEnabled,
+              };
+      
+              console.log("Sending data:", data);  // Log request data
+      
+              const response = await axios.post(url, data, {
+                  headers: { "Content-Type": "application/json" },
+              });
+      
+              console.log("Response received:", response.data);  // Log response
+              // alert(response.data.message || "Registration successful!");
+              
+              if(response.status === 200){
+                if(response.data.message == "Feedback was successfully submitted"){
+                  Toast.show({
+                    type: "success", 
+                    text1: "Successfully",
+                    text2: response.data.message,
+                    position:"center",
+                  });
+                  setMessage("");
+                  setValue(null);
+                  setValue2(null);
+
+                  router.push("home/");
+                }else{
+                  Toast.show({
+                    type: "error", 
+                    text1: "Failed to submit feedback",
+                    text2: response.data.message,
+                    position:"center",
+                  });
+                }
+                
+        
+              }
+              else{
+                Toast.show({
+                  type: "error", // Can be "success", "error", "info"
+                  text1: "Failed to submit feedback",
+                  text2: response.data.message,
+                  position:"center",
+                });
+                // alert(response.data.message);
+              }
+      
+          } 
+          catch (error) {
+              // console.error("Error during registration:", error);
+      
+              if (error.response) {
+                  // console.error("Server Error:", error.response.data);
+                  Toast.show({
+                    type: "error", // Can be "success", "error", "info"
+                    text1: "Error",
+                    text2: error.response.data.message,
+                    position:"center",
+                  });
+                  // alert("Server Error: " + JSON.stringify(error.response.data));
+              } else {
+                  console.error("Network Error:", error.message);
+                  Toast.show({
+                    type: "error", // Can be "success", "error", "info"
+                    text1: "Network Error",
+                    text2: error.message,
+                    position:"center",
+                  });
+                  // alert("Network Error: " + error.message);
+              }
+          }
+          finally{
+            setIsLoading(false);
+          }
+      }
     
   }
   // end of handle login
