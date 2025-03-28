@@ -21,7 +21,7 @@ export default function Home(){
             const email = await AsyncStorage.getItem('email');
             setEmail(email);
             
-            const url = `http://127.0.0.1:8000/getfeedbacks/${email}/`;
+            const url = `https://complaincomplimentbackend.onrender.com/getfeedbacks/${email}/`;
             const response = await axios.get(url);
             if(response.status === 200){
               Toast.show({

@@ -26,7 +26,7 @@ export default function Admin(){
         const fetchFeedbacks = async () => {
             setLoading(true);
             try{
-                const response = await axios.get(`http://127.0.0.1:8000/getadminfeedbacks/`);
+                const response = await axios.get(`https://complaincomplimentbackend.onrender.com/getadminfeedbacks/`);
                 alert(response.status);
                 if(response.status === 200){
                     Toast.show({
