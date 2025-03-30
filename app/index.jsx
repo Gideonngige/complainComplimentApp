@@ -103,7 +103,7 @@ export default function Index() {
     } catch (error) {
       Toast.show({
         type: "error", // Can be "success", "error", "info"
-        text1: "Error logging in",
+        text1: "Error occurred please try again",
         text2: error,
       });
       // console.error("Error logging in:", error);

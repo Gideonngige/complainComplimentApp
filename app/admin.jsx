@@ -58,9 +58,10 @@ export default function Admin(){
     // end of handle new feedback
 
     // handle respond
-    const handleRespond = () => {
-        alert('Respond');
-        router.push('adminresponse/')
+    const handleRespond = async(feedback_id, message) => {
+      await AsyncStorage.setItem('message', message);
+      await AsyncStorage.setItem('feedback_id', feedback_id);
+      router.push('adminresponse/');
     }
     // end of handle respond
 
@@ -74,13 +75,13 @@ export default function Admin(){
   };
 
     // feedback component
-    const Feedback = ({created_at, title, message, category, user_id}) => {
+    const Feedback = ({feedback_id, created_at, title, message, category, user_id, onRespond}) => {
         return (
             <View className='w-full p-4 m-1 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
                     <Text className='font-bold text-green-800'>{created_at}</Text>
                     <Text className='font-bold text-green-800'>{title}</Text>
-                    <TouchableOpacity onPress={handleRespond}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
+                    <TouchableOpacity onPress={() => onRespond(feedback_id, message)}><Text className='font-bold text-green-800'>Respond</Text></TouchableOpacity>
                 </View>
                 <Text className='m-3'>{message}</Text>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
@@ -132,7 +133,7 @@ export default function Admin(){
       </View>
       {/* end of statistics part */}
 
-      <ScrollView className="">
+      <ScrollView className="w-full">
             {/* submitted feedbacks */}
 
             <Text className='w-full text-lg mt-5 font-bold'>Feedbacks</Text>
@@ -142,7 +143,8 @@ export default function Admin(){
             <FlatList
               data={feedbacks}
               keyExtractor={(item) => item.feedback_id.toString()}
-              renderItem={({ item }) => <Feedback created_at={item.created_at.split("T")[0]} title={item.title} status={item.status} message={item.message} category={item.category} user_id={item.user_id} />}
+              renderItem={({ item }) => <Feedback feedback_id={item.feedback_id} created_at={item.created_at.split("T")[0]} title={item.title} status={item.status} message={item.message} category={item.category} user_id={item.user_id} onRespond={handleRespond} />}
+              
             /> 
           )}
             {/* end of submitted feedbacks */}
