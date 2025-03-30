@@ -20,38 +20,44 @@ export default function Notifications() {
   useEffect(() => {
     const fetchNotifications = async () => {
       const email = await AsyncStorage.getItem('email');
+      setLoading(true);
       try {
-        const response = await axios.get(`https://backend1-1cc6.onrender.com/get_notifications/${email}/`);
-        setNotifications(response.data);
-        setLoading(false);
+        const response = await axios.get(`https://complaincomplimentbackend.onrender.com/notification/${email}/`);
+        if(response.status === 200){
+          setNotifications(response.data);
+        }
       } catch (error) {
         console.error(error);
+      }
+      finally {
+        setLoading(false);
       }
     };
 
     fetchNotifications();
   }, []);
 
-  const NotificationItem = ({ date, type, message }) => {
+  const NotificationItem = ({ date, time, message, adminmessage }) => {
     return (
-      <View className="w-full bg-yellow-600 p-3 rounded-lg mb-5">
+      <View className="w-full bg-white p-3 rounded-lg mb-5 shadow-lg">
         {/* Date and Event Title */}
-        <View className="flex-row justify-between bg-yellow-600 p-3 rounded-lg">
-          <Text className="font-bold text-white">{date}</Text>
-          <Text className="font-bold text-white">{type}</Text>
+        <View className="flex-row justify-between bg-white p-3 rounded-lg">
+          <Text className="font-bold text-green-800">{date}</Text>
+          <Text className="font-bold text-green-800">{time}</Text>
         </View>
 
         {/* Divider */}
         <View className="border-b border-gray-300 my-2"></View>
 
         {/* Description */}
-        <Text className="text-white">{message}</Text>
+        <Text className="text-gray-950">{message}</Text>
+        <Text className="text-green-800">{adminmessage}</Text>
       </View>
     );
   };
 
   if (loading) {
-    return <ActivityIndicator size="large" color="#FFA500" />;
+    return <ActivityIndicator size="large" color="#166534" />;
   }
 
   return (
@@ -59,39 +65,19 @@ export default function Notifications() {
         <ScrollView className="">
       
         <View className="bg-white  p-5 font-sans">
-          {notifications.length > 0 ? (
+          {notifications.length === 0 ? (
             <Alert />
           ) : (
             
-            <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>addressed</Text>
-                </View>
-                <Text className='m-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non...</Text>
-                <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
+            <FlatList
+              data={notifications}
+              keyExtractor={(item) => item.response_id.toString()}
+              renderItem={({ item }) => <NotificationItem  date={item.response_date.split("T")[0]} time={item.response_date.split("T")[1].split(".")[0]} message={item.message} adminmessage={item.response} />}
+              
+            /> 
           )}
-          <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>addressed</Text>
-                </View>
-                <Text className='m-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non...</Text>
-                <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
 
-            <View className='w-full p-4 m-2 bg-white rounded-lg shadow-lg'>
-                <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>compliment</Text>
-                    <Text className='font-bold text-green-800'>addressed</Text>
-                </View>
-                <Text className='m-1'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non...</Text>
-                <Text className='m-1 text-green-800'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.</Text>
-            </View>
+            
           <StatusBar />
         </View>
         </ScrollView>
