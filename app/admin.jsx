@@ -15,7 +15,7 @@ export default function Admin(){
     const [resolved, setResolved] = useState(0);
 
     const data = {
-        labels: ["Received", "Solved"],
+        labels: ["Received", "Resolved"],
         datasets: [
           {
             data: [received, resolved]
@@ -29,14 +29,12 @@ export default function Admin(){
       const fetchReceivedResolved = async() => {
         try{
           const response = await axios.get(`https://complaincomplimentbackend.onrender.com/countreceivedresolved/`);
-          alert(response.status);
           if(response.status === 200){
               Toast.show({
                 type: "success",
                 text1: "Successfully",
                 text2: "Feedbacks fetched successfully",
           });
-          alert(response.data.received)
           setReceived(response.data.received);
           setResolved(response.data.resolved);
           }
@@ -56,7 +54,6 @@ export default function Admin(){
             setLoading(true);
             try{
                 const response = await axios.get(`https://complaincomplimentbackend.onrender.com/getadminfeedbacks/`);
-                alert(response.status);
                 if(response.status === 200){
                     Toast.show({
                         type: "success",
@@ -80,7 +77,6 @@ export default function Admin(){
 
     // handle new feedback
     const handleReport = () => {
-        // alert('New Feedback');
         router.push('report/')
     }
     // end of handle new feedback

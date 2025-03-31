@@ -9,13 +9,43 @@ export default function Report(){
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [month, setMonth] = useState("");
+    const [complains, setComplains] = useState(0);
+    const [compliments, setCompliments] = useState(0);
+    const [resolved, setResolved] = useState(0)
+    const [totalFeedbacks, setTotalFeedbacks] = useState(0);
+    const [report, setReport] = useState("");
+    const [reportDate,setReportDate] = useState("");
 
-    // handle new feedback
-    const handleNewFeedback = () => {
-        // alert('New Feedback');
-        router.push('feedback/')
-    }
-    // end of handle new feedback
+    // generate report
+    useEffect(() => {
+        const generateReport = async () => {
+            try{
+                setLoading(true);
+                const url = `https://complaincomplimentbackend.onrender.com/getreport/`;
+                const response = await axios.get(url);
+                if(response.status === 200){
+                    setMonth(response.data[0].month);
+                    setComplains(response.data[0].total_complaints);
+                    setCompliments(response.data[0].total_compliments);
+                    setResolved(response.data[0].total_resolved);
+                    setTotalFeedbacks(response.data[0].total_feedbacks);
+                    setReportDate(response.data[0].report_date);
+                    const newReport = `The following is a report of ${month} on the complains and compliments received. As of today ${month} the department has received a total of  ${totalFeedbacks} from the staffs, lecturers, and students. From the feedbacks that were received, ${complains} were complains and ${compliments} were compliments. Throught this month the department have been able to resolve ${resolved} feedbacks.`;
+                    setReport(newReport);
+                }
+
+            }
+            catch(error){
+                console.log(error);
+            }
+            finally{
+                setLoading(false);
+            }
+        }
+        generateReport();
+    }, []);
+    // end of generate report
 
     if (loading) {
         return <ActivityIndicator size="large" color="#FFA500" />;
@@ -31,16 +61,11 @@ export default function Report(){
             {/* start of report */}
             <View className='w-full p-4 m-2 mb-8 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>12/03/2025</Text>
-                    <Text className='font-bold text-green-800'>ad-hoc</Text>
+                    <Text className='font-bold text-green-800'>{reportDate.split("T")[0]}</Text>
+                    <Text className='font-bold text-green-800'>{reportDate.split("T")[1].split(".")[0]}</Text>
                     <Text className='font-bold text-green-800'>John Doe</Text>
                 </View>
-                <Text className='m-3'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, fuga. Aspernatur id nostrum ipsa, assumenda temporibus minus? Rerum architecto aut ipsam praesentium tempore earum. Iure doloribus harum excepturi at laboriosam.
-                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Error, aliquid facere, aliquam nobis magnam fugit suscipit doloribus, beatae quasi aut voluptatem amet illo perspiciatis ducimus ab quod? Quidem, quae rerum?
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, enim. Aut vero, excepturi ducimus voluptas, accusamus id qui, minima possimus cum amet quis dicta. Praesentium, quibusdam nesciunt! Voluptates, nemo eveniet!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium nemo ex a velit numquam quasi dignissimos ratione? Dolorum deleniti consectetur exercitationem blanditiis libero, aperiam, asperiores expedita beatae, rem dignissimos ratione!
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam aspernatur beatae amet ratione quidem non ducimus officia, quibusdam suscipit culpa, fugit sequi officiis, quae voluptatum aliquam eaque reiciendis a illum!
-                </Text>
+                <Text className='m-3'>{report}</Text>
             </View>
 
 

@@ -15,7 +15,7 @@ export default function AdminResponse() {
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
         { label: 'on-progress', value: 'on-progress' },
-        { label: 'solved', value: 'solved' },
+        { label: 'resolved', value: 'resolved' },
     ]);
 
   useEffect(() => {
