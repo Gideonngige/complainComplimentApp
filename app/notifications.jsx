@@ -39,19 +39,21 @@ export default function Notifications() {
 
   const NotificationItem = ({ date, time, message, adminmessage }) => {
     return (
-      <View className="w-full bg-white p-3 rounded-lg mb-5 shadow-lg">
+      <View className="w-full bg-white p-3 rounded-lg m-2 shadow-lg">
         {/* Date and Event Title */}
         <View className="flex-row justify-between bg-white p-3 rounded-lg">
           <Text className="font-bold text-green-800">{date}</Text>
           <Text className="font-bold text-green-800">{time}</Text>
         </View>
+        <View className='bg-gray-100 rounded-lg shadow-sm'>
+        <Text className="text-gray-600 p-2"><Text className='font-bold'>You</Text> {'\n'} {message}</Text>
+        </View>
 
-        {/* Divider */}
-        <View className="border-b border-gray-300 my-2"></View>
-
-        {/* Description */}
-        <Text className="text-gray-950">{message}</Text>
-        <Text className="text-green-800">{adminmessage}</Text>
+        <View>
+        <Text className="">{adminmessage}</Text>
+        </View>
+        
+       
       </View>
     );
   };

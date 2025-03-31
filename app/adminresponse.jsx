@@ -34,7 +34,16 @@ export default function AdminResponse() {
     setMessage(message);
     // alert(feedback_id);
     // alert(message);
-    setIsLoading(true);
+    if(message === "" || value === "" || responseMessage === ""){
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please fill in all fields",
+      });
+      return;
+    }
+    else{
+      setIsLoading(true);
     try{
       const url = "https://complaincomplimentbackend.onrender.com/adminresponse/";
           const data = {
@@ -79,6 +88,7 @@ export default function AdminResponse() {
     finally{
       setIsLoading(false);
     }
+  }
     // router.push('register/');
     
   }

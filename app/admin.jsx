@@ -11,15 +11,44 @@ export default function Admin(){
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [feedbacks, setFeedbacks] = useState([]);
+    const [received, setReceived] = useState(0);
+    const [resolved, setResolved] = useState(0);
 
     const data = {
         labels: ["Received", "Solved"],
         datasets: [
           {
-            data: [45, 35]
+            data: [received, resolved]
           },
         ],
       };
+
+    
+    // fetching received and resolved feedbacks 
+    useEffect(() => {
+      const fetchReceivedResolved = async() => {
+        try{
+          const response = await axios.get(`https://complaincomplimentbackend.onrender.com/countreceivedresolved/`);
+          alert(response.status);
+          if(response.status === 200){
+              Toast.show({
+                type: "success",
+                text1: "Successfully",
+                text2: "Feedbacks fetched successfully",
+          });
+          alert(response.data.received)
+          setReceived(response.data.received);
+          setResolved(response.data.resolved);
+          }
+
+        }
+        catch(error){
+          console.error(error);
+        }
+      }
+      fetchReceivedResolved();
+    }, []);
+    // end of fetching received and resolved feedbacks
 
     // start fetch feedbacks
     useEffect(() => {
@@ -35,7 +64,6 @@ export default function Admin(){
                         text2: "Feedbacks fetched successfully",
                     });
                     setFeedbacks(response.data);
-
                 }
 
             }
@@ -110,7 +138,7 @@ export default function Admin(){
         width={Dimensions.get("window").width - 10} // Full width
         height={200}
         yAxisLabel=""
-        yAxisSuffix="%"
+        yAxisSuffix=""
         chartConfig={{
           backgroundColor: "#fff",
           backgroundGradientFrom: "white",
