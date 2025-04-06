@@ -20,12 +20,11 @@ export default function Feedback() {
     const [value2, setValue2] = useState(null);
     const [items2, setItems2] = useState([
       { label: 'academic', value: 'academic' },
-      { label: 'finance', value: 'finance' },
-      {label: 'hostel', value: 'hostel'},
-      {label: 'library', value: 'library'},
-      {label: 'medical', value: 'medical'},
-      {label: 'security', value: 'security'},
-      {label: 'transport', value: 'transport'},
+      { label: 'health and wellness', value: 'health and wellness' },
+      {label: 'administration and support', value: 'administration and support'},
+      {label: 'ict and communication', value: 'ict and communication'},
+      {label: 'student services', value: 'student services'},
+      {label: 'maintenance and environment', value: 'maintenance and environment'},
     ]);
 
     const [isEnabled, setIsEnabled] = useState(false);
@@ -147,6 +146,8 @@ export default function Feedback() {
         placeholder="Select"
         style={{borderColor: '#277230',borderWidth: 2,  
         }}
+        zIndex={3000}
+        zIndexInverse={1000}
         listMode="SCROLLVIEW"
       />
     </View>
@@ -163,6 +164,8 @@ export default function Feedback() {
         placeholder="Select"
         style={{borderColor: '#277230',borderWidth: 2,  
         }}
+        zIndex={2000}
+        zIndexInverse={1000}
         listMode="SCROLLVIEW"
       />
     </View>
@@ -171,8 +174,10 @@ export default function Feedback() {
       <TextInput 
       placeholder="complain or compliment"
       value={message}
+      multiline
+      numberOfLines={4}
       onChangeText={setMessage} 
-      className="w-full p-4 h-40 bg-white rounded-lg shadow-sm mb-6 border border-green-800 text-gray-400 text-lg"
+      className="w-full bg-white p-4 h-40 rounded-lg shadow-md border border-gray-300"
       />
 
     <View className="w-full flex-1 justify-center items-center">

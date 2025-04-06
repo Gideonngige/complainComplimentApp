@@ -125,6 +125,8 @@ export default function AdminResponse() {
       <TextInput 
       placeholder="Type your response message here..."
       value={responseMessage}
+      multiline
+      numberOfLines={4}
       onChangeText={setResponseMessage} 
       className="w-full p-4 h-40 bg-white rounded-lg shadow-sm mb-6 border border-green-800 text-gray-400 text-lg"
       />

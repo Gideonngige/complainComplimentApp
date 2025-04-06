@@ -11,18 +11,39 @@ export default function Admin(){
     const [loading, setLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [feedbacks, setFeedbacks] = useState([]);
-    const [received, setReceived] = useState(0);
-    const [resolved, setResolved] = useState(0);
+    const [academicReceived, setAcademicReceived] = useState(0);
+    const [academicResolved, setAcademicResolved] = useState(0);
+    const [administrationReceived, setAdministrationReceived] = useState(0);
+    const [administrationResolved, setAdministrationResolved] = useState(0);
+    const [healthReceived, setHealthReceived] = useState(0);
+    const [healthResolved, setHealthResolved] = useState(0);
+    const [ictReceived, setIctReceived] = useState(0);
+    const [ictResolved, setIctResolved] = useState(0);
+    const [studentServicesReceived, setStudentServicesReceived] = useState(0);
+    const [studentServicesResolved, setStudentServicesResolved] = useState(0);
+    const [maintenanceReceived, setMaintenanceReceived] = useState(0);
+    const [maintenanceResolved, setMaintenanceResolved] = useState(0);
 
-    const data = {
-        labels: ["Received", "Resolved"],
+    const receivedData = {
+        labels: ["Academic", "Admistration", "Health", "ICT","Student Services", "Maintenance"],
         datasets: [
           {
-            data: [received, resolved]
+            data: [academicReceived, administrationReceived, healthReceived, ictReceived, studentServicesReceived, maintenanceReceived]
           },
         ],
       };
 
+      const resolvedData = {
+        labels: ["Academic", "Admistration", "Health", "ICT","Student Services", "Maintenance"],
+        datasets: [
+          {
+            data: [academicResolved, administrationResolved, healthResolved, ictResolved, studentServicesResolved, maintenanceResolved]
+          },
+        ],
+      };
+
+
+      
     
     // fetching received and resolved feedbacks 
     useEffect(() => {
@@ -35,8 +56,18 @@ export default function Admin(){
                 text1: "Successfully",
                 text2: "Feedbacks fetched successfully",
           });
-          setReceived(response.data.received);
-          setResolved(response.data.resolved);
+          setAcademicReceived(response.data.academic_received);
+          setAcademicResolved(response.data.academic_resolved);
+          setAdministrationReceived(response.data.administration_received);
+          setAdministrationResolved(response.data.administration_resolved);
+          setHealthReceived(response.data.health_received);
+          setHealthResolved(response.data.health_resolved);
+          setIctReceived(response.data.ict_received);
+          setIctResolved(response.data.ict_resolved);
+          setStudentServicesReceived(response.data.student_received);
+          setStudentServicesResolved(response.data.student_resolved);
+          setMaintenanceReceived(response.data.maintenance_received);
+          setMaintenanceResolved(response.data.maintenance_resolved);
           }
 
         }
@@ -51,9 +82,10 @@ export default function Admin(){
     // start fetch feedbacks
     useEffect(() => {
         const fetchFeedbacks = async () => {
+          const department = await AsyncStorage.getItem('department');
             setLoading(true);
             try{
-                const response = await axios.get(`https://complaincomplimentbackend.onrender.com/getadminfeedbacks/`);
+                const response = await axios.get(`https://complaincomplimentbackend.onrender.com/getadminfeedbacks/${department}/`);
                 if(response.status === 200){
                     Toast.show({
                         type: "success",
@@ -119,20 +151,22 @@ export default function Admin(){
     // end of feedback component
 
     if (loading) {
-        return <ActivityIndicator size="large" color="#FFA500" />;
+        return <ActivityIndicator size="large" color="#2F6F3A" />;
     }
     return(
         <SafeAreaView className="flex-1 bg-white">
+          <ScrollView className="w-full">
         <View className="flex-1 bg-white justify-center items-center p-2 font-sans">
         {/* statistics part */}
         <View className='w-full m-2'>
         <Text className='text-lg font-bold'>Complaints Received vs Resolved</Text>
 
         <View className='mb-4 mt-4'>
+        <Text className='text-lg font-bold'>Received</Text>
         <BarChart
-        data={data}
+        data={receivedData}
         width={Dimensions.get("window").width - 10} // Full width
-        height={200}
+        height={450}
         yAxisLabel=""
         yAxisSuffix=""
         chartConfig={{
@@ -145,11 +179,36 @@ export default function Admin(){
           style: { borderRadius: 16 },
           propsForDots: { r: "6", strokeWidth: "2", stroke: "#277230" },
         }}
-        verticalLabelRotation={30} // Rotate labels for better visibility
+        verticalLabelRotation={125} // Rotate labels for better visibility
         fromZero={true} // Start from zero
         showValuesOnTopOfBars={true} // Show values on bars
       />
       </View>
+      <View className='mb-4 mt-4'>
+      <Text className='text-lg font-bold'>Resolved</Text>
+        <BarChart
+        data={resolvedData}
+        width={Dimensions.get("window").width - 10} // Full width
+        height={450}
+        yAxisLabel=""
+        yAxisSuffix=""
+        chartConfig={{
+          backgroundColor: "#fff",
+          backgroundGradientFrom: "white",
+          backgroundGradientTo: "green",
+          decimalPlaces: 0,
+          color: (opacity = 1) => `rgba(39, 114, 48, ${opacity})`, // Green bars
+          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          style: { borderRadius: 16 },
+          propsForDots: { r: "6", strokeWidth: "2", stroke: "#277230" },
+        }}
+        verticalLabelRotation={125} // Rotate labels for better visibility
+        fromZero={true} // Start from zero
+        showValuesOnTopOfBars={true} // Show values on bars
+      />
+      </View>
+
+      
 
         <TouchableOpacity className="w-full h-20 justify-center items-center bg-green-800 p-4 mb-8 rounded-lg" onPress={handleReport}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">Report</Text> }
@@ -157,7 +216,7 @@ export default function Admin(){
       </View>
       {/* end of statistics part */}
 
-      <ScrollView className="w-full">
+      
             {/* submitted feedbacks */}
 
             <Text className='w-full text-lg mt-5 font-bold'>Feedbacks</Text>
@@ -167,15 +226,16 @@ export default function Admin(){
             <FlatList
               data={feedbacks}
               keyExtractor={(item) => item.feedback_id.toString()}
-              renderItem={({ item }) => <Feedback feedback_id={item.feedback_id} created_at={item.created_at.split("T")[0]} title={item.title} status={item.status} message={item.message} category={item.category} user_id={item.user_id} onRespond={handleRespond} />}
+              renderItem={({ item }) => <Feedback feedback_id={item.feedback_id.toString()} created_at={item.created_at.split("T")[0]} title={item.title} status={item.status} message={item.message} category={item.category} user_id={item.user_id} onRespond={handleRespond} />}
               
             /> 
           )}
             {/* end of submitted feedbacks */}
-            </ScrollView>
+            
 
         <StatusBar/>
         </View>
+        </ScrollView>
         
         </SafeAreaView>
     );

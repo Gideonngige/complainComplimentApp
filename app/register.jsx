@@ -158,15 +158,20 @@ export default function Register(){
       secureTextEntry 
       value={confirmPassword}
       onChangeText={setConfirmPassword}
-      className="w-full p-4 bg-white rounded-lg shadow-sm mb-6 border border-green-800 text-gray-400 text-lg"
+      className="w-full p-4 bg-white rounded-lg shadow-sm mb-2 border border-green-800 text-gray-400 text-lg"
       />
       
-      <TouchableOpacity className="w-full flex-row justify-end m-5" onPress={() => alert("Got to forgot password page")}>
+      <TouchableOpacity className="w-full flex-row justify-end m-2" onPress={() => alert("Got to forgot password page")}>
       </TouchableOpacity>
       <TouchableOpacity className="w-full bg-green-800 p-4 rounded-lg" onPress={handleRegister}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">Register</Text>}
       </TouchableOpacity>
-      <Text className="text-lg">Already have an account? <TouchableOpacity onPress={() => router.push("/")}><Text className="text-green-800">Login</Text></TouchableOpacity></Text>
+      <View className="flex-row justify-center mt-4">
+      <Text className="text-lg">Already have an account? </Text>
+      <TouchableOpacity onPress={() => router.push("/")}>
+      <Text className="text-lg text-green-800">Login</Text>
+      </TouchableOpacity>
+      </View>
       <Toast/>
       <StatusBar/>
       </View>

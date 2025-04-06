@@ -83,7 +83,7 @@ export default function Home(){
   };
 
     if (loading) {
-        return <ActivityIndicator size="large" color="#FFA500" />;
+        return <ActivityIndicator size="large" color="#2F6F3A" />;
     }
     return(
         <SafeAreaView className="flex-1 bg-white">

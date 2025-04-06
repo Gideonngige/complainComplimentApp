@@ -26,22 +26,47 @@ export default function Index() {
     try {
       const url = `https://complaincomplimentbackend.onrender.com/login/${email}/${password}/`;
       const response = await axios.get(url);
+      const url2 = `https://complaincomplimentbackend.onrender.com/getuser/${email}/`;
+      const response2 = await axios.get(url2);
       
       
-      if (response.status === 200) {
+      if (response.status === 200 && response2.status === 200) {
         const message = response.data.message; 
         if(message == "Successfully logged in"){
           await AsyncStorage.setItem('email', email);
           // router.push("/home");
-          if(email === "gtechcompany01@gmail.com"){
-            navigation.navigate('admin', {
-              email,
-            });
+          if(response2.data.role == "admin"){
+            await AsyncStorage.setItem('department', response2.data.department);
+            switch(response2.data.department){
+              case "academic":
+                router.push("admin/");
+                break;
+              case "health and wellness":
+                router.push("admin/");
+                break;
+              case "administration and support":
+                router.push("admin/");
+                break;
+              case "ict and communication":
+                router.push("admin/");
+                break;
+              case "student services":
+                router.push("admin/");
+                break;
+              case "maintenance and environment":
+                router.push("admin/");
+                break;
+              default:
+                Toast.show({
+                  type: "error", 
+                  text1: "No department found",
+                  text2: "You have not been assigned to any department",
+                });
+                break;
+            }
           }
           else{
-            navigation.navigate('home', {
-              email,
-            });
+            router.push("home/");
 
           }
       
@@ -68,7 +93,7 @@ export default function Index() {
       Toast.show({
         type: "error", // Can be "success", "error", "info"
         text1: "Login failed",
-        text2: error,
+        text2: error.message,
       });
       return null;
     }
@@ -138,17 +163,22 @@ export default function Index() {
       secureTextEntry
       value={password}
       onChangeText={setPassword} 
-      className="w-full p-4 bg-white rounded-lg shadow-sm mb-6 border border-green-800 text-gray-400 text-lg"
+      className="w-full p-4 bg-white rounded-lg shadow-sm mb-2 border border-green-800 text-gray-400 text-lg"
       />
       
-      <TouchableOpacity className="w-full flex-row justify-end m-5" onPress={handleForgotPassword}>
+      <TouchableOpacity className="w-full flex-row justify-end m-4" onPress={handleForgotPassword}>
       <Text className="text-lg">Forgot password?</Text>
       </TouchableOpacity>
       <TouchableOpacity className="w-full bg-green-800 p-4 rounded-lg" onPress={handleLogin}>
         {isLoading ? <ActivityIndicator size="large" color="#fff" /> : <Text className="text-white text-center font-semibold text-lg">Login</Text> }
         
       </TouchableOpacity>
-      <Text className="text-lg">Do not have an account? <TouchableOpacity onPress={() => router.push("/register")}><Text className="text-green-800">Register</Text></TouchableOpacity></Text>
+      <View className="flex-row justify-center mt-4">
+      <Text className="text-lg">Do not have an account? </Text>
+      <TouchableOpacity onPress={() => router.push("/register")}>
+      <Text className="text-lg text-green-800">Register</Text>
+      </TouchableOpacity>
+      </View>
       <Toast/>
       <StatusBar/>
     </View>

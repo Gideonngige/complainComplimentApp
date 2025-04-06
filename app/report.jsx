@@ -16,21 +16,26 @@ export default function Report(){
     const [totalFeedbacks, setTotalFeedbacks] = useState(0);
     const [report, setReport] = useState("");
     const [reportDate,setReportDate] = useState("");
+    const [reportTime, setReportTime] = useState("");
 
     // generate report
     useEffect(() => {
         const generateReport = async () => {
+            const getmonth = new Date().toLocaleString('default', { month: 'long' });
             try{
                 setLoading(true);
                 const url = `https://complaincomplimentbackend.onrender.com/getreport/`;
                 const response = await axios.get(url);
                 if(response.status === 200){
+                    const newreporttime = response.data[0].report_date.split('T')[1].split('.')[0]
+                    const  newreportdate = response.data[0].report_date.split('T')[0]
                     setMonth(response.data[0].month);
                     setComplains(response.data[0].total_complaints);
                     setCompliments(response.data[0].total_compliments);
                     setResolved(response.data[0].total_resolved);
                     setTotalFeedbacks(response.data[0].total_feedbacks);
-                    setReportDate(response.data[0].report_date);
+                    setReportDate(newreportdate);
+                    setReportTime(newreporttime);
                     const newReport = `The following is a report of ${month} on the complains and compliments received. As of today ${month} the department has received a total of  ${totalFeedbacks} from the staffs, lecturers, and students. From the feedbacks that were received, ${complains} were complains and ${compliments} were compliments. Throught this month the department have been able to resolve ${resolved} feedbacks.`;
                     setReport(newReport);
                 }
@@ -48,7 +53,7 @@ export default function Report(){
     // end of generate report
 
     if (loading) {
-        return <ActivityIndicator size="large" color="#FFA500" />;
+        return <ActivityIndicator size="large" color="#2F6F3A" />;
     }
     return(
         <SafeAreaView className="flex-1 bg-white">
@@ -61,9 +66,8 @@ export default function Report(){
             {/* start of report */}
             <View className='w-full p-4 m-2 mb-8 bg-white rounded-lg shadow-lg'>
                 <View className="flex-row justify-between bg-white p-3 rounded-lg">
-                    <Text className='font-bold text-green-800'>{reportDate.split("T")[0]}</Text>
-                    <Text className='font-bold text-green-800'>{reportDate.split("T")[1].split(".")[0]}</Text>
-                    <Text className='font-bold text-green-800'>John Doe</Text>
+                    <Text className='font-bold text-green-800'>{reportDate}</Text>
+                    <Text className='font-bold text-green-800'>{reportTime}</Text>
                 </View>
                 <Text className='m-3'>{report}</Text>
             </View>
