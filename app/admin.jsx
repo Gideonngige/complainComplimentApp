@@ -233,7 +233,11 @@ export default function Admin(){
             {/* end of submitted feedbacks */}
             
 
-        <StatusBar/>
+            <StatusBar
+      barStyle="dark-content" // or "light-content" depending on your background
+      backgroundColor="transparent"
+      translucent={true}
+      />
         </View>
         </ScrollView>
         

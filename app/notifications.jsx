@@ -80,7 +80,11 @@ export default function Notifications() {
           )}
 
             
-          <StatusBar />
+      <StatusBar
+      barStyle="dark-content" // or "light-content" depending on your background
+      backgroundColor="transparent"
+      translucent={true}
+      />
         </View>
         </ScrollView>
     </SafeAreaView>

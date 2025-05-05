@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images2/logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gideon_ushindi.complainCompliment"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "bab5f2a1-7f7f-40fc-a0a9-a0a4d81885ec"
+      }
     }
   }
 }

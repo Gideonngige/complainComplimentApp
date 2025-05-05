@@ -136,7 +136,11 @@ export default function AdminResponse() {
         
       </TouchableOpacity>
       <Toast/>
-      <StatusBar/>
+      <StatusBar
+      barStyle="dark-content" // or "light-content" depending on your background
+      backgroundColor="transparent"
+      translucent={true}
+      />
     </View>
     </ScrollView>
     </SafeAreaView>

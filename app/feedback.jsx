@@ -132,7 +132,7 @@ export default function Feedback() {
   
   return (
     <SafeAreaView className="flex-1 bg-white">
-    <ScrollView nestedScrollEnabled={true} className="p-4">
+    <ScrollView nestedScrollEnabled={true} className="p-4" >
     <View className="flex-1 bg-white justify-center items-center p-5 font-sans">
       <View className="w-full mb-4">
     <Text className="text-lg text-green-800 font-bold">Title</Text>
@@ -166,7 +166,7 @@ export default function Feedback() {
         }}
         zIndex={2000}
         zIndexInverse={1000}
-        listMode="SCROLLVIEW"
+        listMode="MODAL"
       />
     </View>
 
@@ -201,7 +201,11 @@ export default function Feedback() {
         
       </TouchableOpacity>
       <Toast/>
-      <StatusBar/>
+      <StatusBar
+      barStyle="dark-content" // or "light-content" depending on your background
+      backgroundColor="transparent"
+      translucent={true}
+      />
     </View>
     </ScrollView>
     </SafeAreaView>
